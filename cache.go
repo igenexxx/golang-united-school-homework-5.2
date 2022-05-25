@@ -12,7 +12,9 @@ type Cache struct {
 }
 
 func NewCache() Cache {
-	return Cache{}
+	return Cache{
+		keyPairs: make(map[string]keyPair),
+	}
 }
 
 func (r *Cache) Get(key string) (string, bool) {
