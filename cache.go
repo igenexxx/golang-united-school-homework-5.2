@@ -21,7 +21,7 @@ func (r *Cache) Get(key string) (string, bool) {
 	cache, ok := r.keyPairs[key]
 	currentTime := time.Now()
 
-	if currentTime.After(cache.deadline) {
+	if !cache.deadline.IsZero() && currentTime.After(cache.deadline) {
 		delete(r.keyPairs, key)
 
 		return "", false
@@ -46,7 +46,7 @@ func (r *Cache) Keys() []string {
 	currentTime := time.Now()
 
 	for key, value := range r.keyPairs {
-		if currentTime.After(value.deadline) {
+		if !value.deadline.IsZero() && currentTime.After(value.deadline) {
 			delete(r.keyPairs, key)
 
 			continue
